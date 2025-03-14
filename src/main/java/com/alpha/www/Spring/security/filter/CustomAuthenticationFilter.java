@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.alpha.www.Spring.security.authentication.CustomAuthentication;
+import com.alpha.www.Spring.security.authentication.ExternalAuthentication;
 import com.alpha.www.Spring.security.manager.CustomAuthenticationManager;
 
 import jakarta.servlet.FilterChain;
@@ -25,10 +26,21 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		
 		String headerKey = request.getHeader("key");
-		CustomAuthentication customAuthentication = new CustomAuthentication(false, headerKey);
-		Authentication authenticatedObject = customAuthenticationManager.authenticate(customAuthentication);
+		String externalHeaderKey = request.getHeader("external-key");
+		
+		Authentication authenticatedObject;
+		if (externalHeaderKey != null) {
+			ExternalAuthentication externalAuthentication = new ExternalAuthentication(false, externalHeaderKey);
+			authenticatedObject = customAuthenticationManager.authenticate(externalAuthentication);
+		} else {
+			CustomAuthentication customAuthentication = new CustomAuthentication(false, headerKey);
+			authenticatedObject = customAuthenticationManager.authenticate(customAuthentication);
+		}
+		
 		SecurityContextHolder.getContext().setAuthentication(authenticatedObject);
+		
 		filterChain.doFilter(request, response);
 	}
 

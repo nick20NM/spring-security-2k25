@@ -6,6 +6,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import com.alpha.www.Spring.security.provider.CustomAuthenticationProvider;
+import com.alpha.www.Spring.security.provider.ExternalAuthenticationProvider;
 
 import lombok.AllArgsConstructor;
 
@@ -14,10 +15,15 @@ import lombok.AllArgsConstructor;
 public class CustomAuthenticationManager implements AuthenticationManager {
 
 	private CustomAuthenticationProvider customAuthenticationProvider;
+	private ExternalAuthenticationProvider externalAuthenticationProvider;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		return customAuthenticationProvider.authenticate(authentication);
+		
+		if (customAuthenticationProvider.supports(authentication.getClass())) {
+			return customAuthenticationProvider.authenticate(authentication);
+		} else {
+			return externalAuthenticationProvider.authenticate(authentication);
+		}
 	}
-
 }

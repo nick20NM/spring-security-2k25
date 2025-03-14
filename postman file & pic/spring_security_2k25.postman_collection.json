@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "95f8edb6-831d-425c-912c-2ae522d65a2d",
+		"name": "spring_security_2k25",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18081090"
+	},
+	"item": [
+		{
+			"name": "basic auth",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "f571c551-d5a3-42f5-af10-2206bca42492",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/hello",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "secret key",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "key",
+						"value": "secret_key",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "external-key",
+						"value": "external_secret_key",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/hello",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hello"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
